@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="GoLinterSettings">
+    <option name="customConfigFile" value="$PROJECT_DIR$/golangci.yml" />
+    <option name="enabledLinters">
+      <list>
+        <option value="exportloopref" />
+        <option value="funlen" />
+        <option value="gocritic" />
+        <option value="goconst" />
+        <option value="errcheck" />
+        <option value="dogsled" />
+        <option value="gocognit" />
+        <option value="ineffassign" />
+        <option value="deadcode" />
+        <option value="unparam" />
+        <option value="structcheck" />
+        <option value="nakedret" />
+        <option value="revive" />
+        <option value="prealloc" />
+        <option value="gochecknoglobals" />
+        <option value="staticcheck" />
+        <option value="dupl" />
+        <option value="govet" />
+        <option value="gomnd" />
+        <option value="misspell" />
+        <option value="typecheck" />
+        <option value="gochecknoinits" />
+        <option value="rowserrcheck" />
+        <option value="lll" />
+        <option value="bodyclose" />
+        <option value="varcheck" />
+        <option value="gosec" />
+        <option value="godox" />
+        <option value="gofmt" />
+        <option value="unconvert" />
+        <option value="unused" />
+        <option value="stylecheck" />
+        <option value="whitespace" />
+        <option value="depguard" />
+        <option value="goimports" />
+        <option value="goprintffuncname" />
+        <option value="gosimple" />
+        <option value="gocyclo" />
+      </list>
+    </option>
+    <option name="goLinterExe" value="$USER_HOME$/go/bin/golangci-lint" />
+    <option name="linterSelected" value="true" />
+  </component>
+</project>

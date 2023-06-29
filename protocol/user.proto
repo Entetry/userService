@@ -1,0 +1,40 @@
+syntax = "proto3";
+option go_package = "./userService";
+
+package proto;
+
+service UserService {
+  rpc GetByID(GetByIDRequest) returns (GetByIDResponse);
+  rpc Create(CreateRequest) returns (CreateResponse);
+  rpc Delete(DeleteRequest) returns (DeleteResponse);
+}
+
+
+message GetByIDRequest{
+  string uuid = 1;
+}
+
+message GetByIDResponse{
+  string uuid = 1;
+  string name = 2;
+  string email = 3;
+}
+
+message CreateRequest{
+  string username = 1;
+  string email = 2;
+  string password = 3;
+}
+
+message CreateResponse{
+  string uuid = 1 ;
+}
+
+message DeleteRequest{
+  string uuid = 1;
+}
+
+message DeleteResponse{
+
+}
+
