@@ -24,10 +24,6 @@ func NewUser(user *service.User) *User {
 
 // GetByID Retrieves user based on given ID
 func (u *User) GetByID(ctx context.Context, request *userService.GetByIDRequest) (*userService.GetByIDResponse, error) {
-	if err := request.Validate(); err != nil {
-		return nil, status.Error(codes.InvalidArgument, "input arguments are invalid")
-	}
-
 	id, err := uuid.Parse(request.Uuid)
 	if err != nil {
 		return nil, status.Error(codes.InvalidArgument, err.Error())
