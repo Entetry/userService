@@ -4,7 +4,7 @@ package mocks
 
 import (
 	context "context"
-	model "userService/internal/model"
+	"github.com/Entetry/userService/internal/model"
 
 	mock "github.com/stretchr/testify/mock"
 

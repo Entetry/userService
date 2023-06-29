@@ -1,4 +1,4 @@
-module userService
+module github.com/Entetry/userService
 
 go 1.19
 

@@ -4,38 +4,48 @@ package service
 import (
 	"context"
 	"errors"
+	"github.com/Entetry/userService/internal/model"
+	"github.com/Entetry/userService/internal/repository"
 	"regexp"
 	"strings"
-	"userService/internal/model"
-	"userService/internal/repository"
 
 	"github.com/google/uuid"
 	log "github.com/sirupsen/logrus"
 	"golang.org/x/crypto/bcrypt"
 )
 
+// EmailRegex used for email checks
 const EmailRegex = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$"
 
 var (
+	// ErrEmailNotValid Not valid email error
 	ErrEmailNotValid = errors.New("email Not valid")
-	ErrUserNotFound  = errors.New("user not found")
+	// ErrUserNotFound not found user error
+	ErrUserNotFound = errors.New("user not found")
 )
+
+// UserRepository user repository interface
+type UserRepository interface {
+	Create(ctx context.Context, username, pwdHash, email string) (uuid.UUID, error)
+	GetByID(ctx context.Context, id uuid.UUID) (*model.User, error)
+	Delete(ctx context.Context, id uuid.UUID) error
+}
 
 // User service struct
 type User struct {
-	userRepository repository.UserRepository
+	userRepository UserRepository
 	emailRegex     *regexp.Regexp
 }
 
 // NewUserService creates new User service
-func NewUserService(userRepository repository.UserRepository) *User {
+func NewUserService(userRepository UserRepository) *User {
 	regex := regexp.MustCompile(EmailRegex)
 	return &User{
 		userRepository: userRepository,
 		emailRegex:     regex}
 }
 
-// GetByUsername return user by its username
+// GetByID GetByID return user by its id
 func (u *User) GetByID(ctx context.Context, ID uuid.UUID) (*model.User, error) {
 	user, err := u.userRepository.GetByID(ctx, ID)
 	if errors.Is(err, repository.ErrUserNotFound) {
@@ -61,6 +71,7 @@ func (u *User) Create(ctx context.Context, username, password, email string) (uu
 	return u.userRepository.Create(ctx, username, string(pwdHash), lcEmail)
 }
 
+// Delete delete user from db
 func (u *User) Delete(ctx context.Context, ID uuid.UUID) error {
 	return u.userRepository.Delete(ctx, ID)
 }

@@ -2,10 +2,10 @@ package repository
 
 import (
 	"context"
+	"github.com/Entetry/userService/internal/model"
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/require"
 	"testing"
-	"userService/internal/model"
 )
 
 var (

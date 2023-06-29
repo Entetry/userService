@@ -4,11 +4,11 @@ package handler
 import (
 	"context"
 	"errors"
+	"github.com/Entetry/userService/internal/service"
+	"github.com/Entetry/userService/protocol/userService"
 	"github.com/google/uuid"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-	"userService/internal/service"
-	"userService/protocol/userService"
 )
 
 // User handler user struct

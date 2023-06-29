@@ -5,7 +5,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"userService/internal/model"
+	"github.com/Entetry/userService/internal/model"
 
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v4"
@@ -14,13 +14,6 @@ import (
 
 // ErrUserNotFound tells that user is not found
 var ErrUserNotFound = errors.New("user Not found")
-
-// UserRepository user repository interface
-type UserRepository interface {
-	Create(ctx context.Context, username, pwdHash, email string) (uuid.UUID, error)
-	GetByID(ctx context.Context, id uuid.UUID) (*model.User, error)
-	Delete(ctx context.Context, id uuid.UUID) error
-}
 
 // User User postgres repository struct
 type User struct {

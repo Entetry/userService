@@ -3,6 +3,11 @@ package main
 import (
 	"context"
 	"fmt"
+	"github.com/Entetry/userService/internal/config"
+	"github.com/Entetry/userService/internal/handler"
+	"github.com/Entetry/userService/internal/repository"
+	"github.com/Entetry/userService/internal/service"
+	"github.com/Entetry/userService/protocol/userService"
 	"github.com/jackc/pgx/v4/pgxpool"
 	log "github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
@@ -10,11 +15,6 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
-	"userService/internal/config"
-	"userService/internal/handler"
-	"userService/internal/repository"
-	"userService/internal/service"
-	"userService/protocol/userService"
 )
 
 func main() {
