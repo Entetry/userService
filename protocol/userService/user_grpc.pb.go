@@ -19,9 +19,10 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	UserService_GetByID_FullMethodName = "/proto.UserService/GetByID"
-	UserService_Create_FullMethodName  = "/proto.UserService/Create"
-	UserService_Delete_FullMethodName  = "/proto.UserService/Delete"
+	UserService_GetByID_FullMethodName       = "/proto.UserService/GetByID"
+	UserService_GetByUsername_FullMethodName = "/proto.UserService/GetByUsername"
+	UserService_Create_FullMethodName        = "/proto.UserService/Create"
+	UserService_Delete_FullMethodName        = "/proto.UserService/Delete"
 )
 
 // UserServiceClient is the client API for UserService service.
@@ -29,6 +30,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type UserServiceClient interface {
 	GetByID(ctx context.Context, in *GetByIDRequest, opts ...grpc.CallOption) (*GetByIDResponse, error)
+	GetByUsername(ctx context.Context, in *GetByUsernameRequest, opts ...grpc.CallOption) (*GetByUsernameResponse, error)
 	Create(ctx context.Context, in *CreateRequest, opts ...grpc.CallOption) (*CreateResponse, error)
 	Delete(ctx context.Context, in *DeleteRequest, opts ...grpc.CallOption) (*DeleteResponse, error)
 }
@@ -44,6 +46,15 @@ func NewUserServiceClient(cc grpc.ClientConnInterface) UserServiceClient {
 func (c *userServiceClient) GetByID(ctx context.Context, in *GetByIDRequest, opts ...grpc.CallOption) (*GetByIDResponse, error) {
 	out := new(GetByIDResponse)
 	err := c.cc.Invoke(ctx, UserService_GetByID_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userServiceClient) GetByUsername(ctx context.Context, in *GetByUsernameRequest, opts ...grpc.CallOption) (*GetByUsernameResponse, error) {
+	out := new(GetByUsernameResponse)
+	err := c.cc.Invoke(ctx, UserService_GetByUsername_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -73,6 +84,7 @@ func (c *userServiceClient) Delete(ctx context.Context, in *DeleteRequest, opts 
 // for forward compatibility
 type UserServiceServer interface {
 	GetByID(context.Context, *GetByIDRequest) (*GetByIDResponse, error)
+	GetByUsername(context.Context, *GetByUsernameRequest) (*GetByUsernameResponse, error)
 	Create(context.Context, *CreateRequest) (*CreateResponse, error)
 	Delete(context.Context, *DeleteRequest) (*DeleteResponse, error)
 	mustEmbedUnimplementedUserServiceServer()
@@ -84,6 +96,9 @@ type UnimplementedUserServiceServer struct {
 
 func (UnimplementedUserServiceServer) GetByID(context.Context, *GetByIDRequest) (*GetByIDResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetByID not implemented")
+}
+func (UnimplementedUserServiceServer) GetByUsername(context.Context, *GetByUsernameRequest) (*GetByUsernameResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetByUsername not implemented")
 }
 func (UnimplementedUserServiceServer) Create(context.Context, *CreateRequest) (*CreateResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Create not implemented")
@@ -118,6 +133,24 @@ func _UserService_GetByID_Handler(srv interface{}, ctx context.Context, dec func
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(UserServiceServer).GetByID(ctx, req.(*GetByIDRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserService_GetByUsername_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetByUsernameRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).GetByUsername(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserService_GetByUsername_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).GetByUsername(ctx, req.(*GetByUsernameRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -168,6 +201,10 @@ var UserService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetByID",
 			Handler:    _UserService_GetByID_Handler,
+		},
+		{
+			MethodName: "GetByUsername",
+			Handler:    _UserService_GetByUsername_Handler,
 		},
 		{
 			MethodName: "Create",

@@ -5,6 +5,7 @@ package proto;
 
 service UserService {
   rpc GetByID(GetByIDRequest) returns (GetByIDResponse);
+  rpc GetByUsername(GetByUsernameRequest) returns (GetByUsernameResponse);
   rpc Create(CreateRequest) returns (CreateResponse);
   rpc Delete(DeleteRequest) returns (DeleteResponse);
 }
@@ -19,6 +20,18 @@ message GetByIDResponse{
   string name = 2;
   string email = 3;
 }
+
+message GetByUsernameRequest{
+  string username = 1;
+}
+
+message GetByUsernameResponse{
+  string uuid = 1;
+  string name = 2;
+  string email = 3;
+  string passwordHash = 4;
+}
+
 
 message CreateRequest{
   string username = 1;

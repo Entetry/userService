@@ -6,14 +6,21 @@ import (
 	"errors"
 	"fmt"
 	"github.com/Entetry/userService/internal/model"
-
 	"github.com/google/uuid"
+	"github.com/jackc/pgconn"
 	"github.com/jackc/pgx/v4"
 	"github.com/jackc/pgx/v4/pgxpool"
 )
 
+// constraintViolation error code
+const constraintViolation = "23505"
+
 // ErrUserNotFound tells that user is not found
-var ErrUserNotFound = errors.New("user Not found")
+var (
+	ErrUserNotFound         = errors.New("user Not found")
+	ErrEmailAlreadyExist    = errors.New("email already exists")
+	ErrUsernameAlreadyExist = errors.New("username already exists")
+)
 
 // User User postgres repository struct
 type User struct {
@@ -37,6 +44,15 @@ func (u *User) Create(ctx context.Context, username, pwdHash, email string) (uui
 	_, err := u.db.Exec(ctx, `INSERT INTO users (id, username, email, passwordHash) VALUES ($1, $2, $3, $4)`,
 		user.ID, user.Username, user.Email, user.PasswordHash)
 	if err != nil {
+		pqErr, ok := err.(*pgconn.PgError)
+		if ok && pqErr.Code == constraintViolation {
+			if pqErr.ConstraintName == "email_unique" {
+				return uuid.Nil, ErrEmailAlreadyExist
+			} else if pqErr.ConstraintName == "username_unique" {
+				return uuid.Nil, ErrUsernameAlreadyExist
+			}
+		}
+
 		return uuid.Nil, fmt.Errorf("cannot create User: %v", err)
 	}
 	return user.ID, nil
@@ -50,10 +66,19 @@ func (u *User) GetByID(ctx context.Context, id uuid.UUID) (*model.User, error) {
 		&user.ID, &user.Username, &user.Email, &user.PasswordHash)
 	if errors.Is(err, pgx.ErrNoRows) {
 		return nil, ErrUserNotFound
-	}
-
-	if err != nil {
+	} else if err != nil {
 		return nil, fmt.Errorf("error in GetByID: %v", err)
+	}
+	return &user, nil
+}
+
+// GetByUsername return user by its username
+func (u *User) GetByUsername(ctx context.Context, username string) (*model.User, error) {
+	var user model.User
+	err := u.db.QueryRow(ctx, `SELECT id, username, email, passwordHash FROM users WHERE username = $1`, username).Scan(
+		&user.ID, &user.Username, &user.Email, &user.PasswordHash)
+	if err != nil && !errors.Is(err, pgx.ErrNoRows) {
+		return nil, fmt.Errorf("can't GetByUsername: %v", err)
 	}
 	return &user, nil
 }
