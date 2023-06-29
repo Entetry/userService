@@ -10,7 +10,6 @@ service UserService {
   rpc Delete(DeleteRequest) returns (DeleteResponse);
 }
 
-
 message GetByIDRequest{
   string uuid = 1;
 }
