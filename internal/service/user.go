@@ -4,10 +4,11 @@ package service
 import (
 	"context"
 	"errors"
-	"github.com/Entetry/userService/internal/model"
-	"github.com/Entetry/userService/internal/repository"
 	"regexp"
 	"strings"
+
+	"github.com/Entetry/userService/internal/model"
+	"github.com/Entetry/userService/internal/repository"
 
 	"github.com/google/uuid"
 	log "github.com/sirupsen/logrus"

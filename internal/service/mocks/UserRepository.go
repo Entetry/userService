@@ -4,8 +4,8 @@ package mocks
 
 import (
 	context "context"
-	"github.com/Entetry/userService/internal/model"
 
+	model "github.com/Entetry/userService/internal/model"
 	mock "github.com/stretchr/testify/mock"
 
 	uuid "github.com/google/uuid"
@@ -69,6 +69,29 @@ func (_m *UserRepository) GetByID(ctx context.Context, id uuid.UUID) (*model.Use
 	var r1 error
 	if rf, ok := ret.Get(1).(func(context.Context, uuid.UUID) error); ok {
 		r1 = rf(ctx, id)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// GetByUsername provides a mock function with given fields: ctx, username
+func (_m *UserRepository) GetByUsername(ctx context.Context, username string) (*model.User, error) {
+	ret := _m.Called(ctx, username)
+
+	var r0 *model.User
+	if rf, ok := ret.Get(0).(func(context.Context, string) *model.User); ok {
+		r0 = rf(ctx, username)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*model.User)
+		}
+	}
+
+	var r1 error
+	if rf, ok := ret.Get(1).(func(context.Context, string) error); ok {
+		r1 = rf(ctx, username)
 	} else {
 		r1 = ret.Error(1)
 	}

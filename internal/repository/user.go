@@ -5,6 +5,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+
 	"github.com/Entetry/userService/internal/model"
 	"github.com/google/uuid"
 	"github.com/jackc/pgconn"

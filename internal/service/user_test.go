@@ -2,10 +2,11 @@ package service
 
 import (
 	"context"
+	"testing"
+
 	"github.com/Entetry/userService/internal/service/mocks"
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
-	"testing"
 )
 
 func TestUser_Create_InvalidEmail(t *testing.T) {

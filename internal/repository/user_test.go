@@ -2,14 +2,15 @@ package repository
 
 import (
 	"context"
+	"testing"
+
 	"github.com/Entetry/userService/internal/model"
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/require"
-	"testing"
 )
 
 var (
-	user = model.User{ //nolint:gochecknoglobals
+	user = model.User{ //nolint:gochecknoglobals //Explanation user for test
 		ID:           uuid.New(),
 		Username:     "YungLean",
 		Email:        "jonahtanlendroyer@proton.me",

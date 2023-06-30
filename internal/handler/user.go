@@ -4,6 +4,7 @@ package handler
 import (
 	"context"
 	"errors"
+
 	"github.com/Entetry/userService/internal/repository"
 	"github.com/Entetry/userService/internal/service"
 	"github.com/Entetry/userService/protocol/userService"

@@ -3,17 +3,18 @@ package repository
 import (
 	"context"
 	"fmt"
-	"github.com/jackc/pgx/v4/pgxpool"
-	"github.com/ory/dockertest"
-	log "github.com/sirupsen/logrus"
 	"os"
 	"os/exec"
 	"testing"
+
+	"github.com/jackc/pgx/v4/pgxpool"
+	"github.com/ory/dockertest"
+	log "github.com/sirupsen/logrus"
 )
 
 var (
-	dbPool         *pgxpool.Pool
-	userRepository *User
+	dbPool         *pgxpool.Pool //nolint:gochecknoglobals  // Explanation: This global variable is needed for tests
+	userRepository *User         //nolint:gochecknoglobals  // Explanation: This global variable is needed for tests
 )
 
 func TestMain(m *testing.M) {
@@ -43,12 +44,14 @@ func TestMain(m *testing.M) {
 	})
 	if err != nil {
 		cancel()
-		log.Fatalf("Could not connect to database: %s", err)
+		log.Errorf("Could not connect to database: %s", err)
+		return
 	}
 
 	userRepository = NewUserRepository(dbPool)
 	if err != nil {
-		log.Fatal(err)
+		log.Error(err)
+		return
 	}
 
 	cmd := exec.Command("flyway",
@@ -60,19 +63,19 @@ func TestMain(m *testing.M) {
 
 	err = cmd.Run()
 	if err != nil {
-		log.Fatalf("Could not connect to database: %s", err)
+		log.Errorf("Could not connect to database: %s", err)
+		return
 	}
 
 	code := m.Run()
+	defer os.Exit(code)
 
 	if err = pool.Purge(resource); err != nil {
-		log.Fatalf("Could not purge resource: %s", err)
+		log.Panicf("Could not purge resource: %s", err)
 	}
 
 	err = resource.Expire(1)
 	if err != nil {
-		log.Fatal(err)
+		log.Panic(err)
 	}
-
-	os.Exit(code)
 }
