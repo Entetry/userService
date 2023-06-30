@@ -15,10 +15,12 @@ import (
 // constraintViolation error code
 const constraintViolation = "23505"
 
-// ErrUserNotFound tells that user is not found
 var (
-	ErrUserNotFound         = errors.New("user Not found")
-	ErrEmailAlreadyExist    = errors.New("email already exists")
+	// ErrUserNotFound tells that user is not found
+	ErrUserNotFound = errors.New("user Not found")
+	// ErrEmailAlreadyExist tells that email already exist
+	ErrEmailAlreadyExist = errors.New("email already exists")
+	// ErrUsernameAlreadyExist tells that email already exist
 	ErrUsernameAlreadyExist = errors.New("username already exists")
 )
 

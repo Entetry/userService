@@ -8,15 +8,15 @@ COPY . /usr/src/app/
 
 RUN go mod download
 
-RUN go build -o /userService
+RUN go build -o /userservice
 
 FROM alpine:latest
 
 WORKDIR /
 
-COPY --from=build /userService /
+COPY --from=build /userservice /
 
 EXPOSE ${APP_PORT}
 
-CMD ["./userService"]
+CMD ["./userservice"]
 
